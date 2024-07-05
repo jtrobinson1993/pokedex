@@ -97,9 +97,9 @@ export default function Pokedex() {
         <div className='pokedex-controls'>
           <button className='start-button'></button>
           <div className='central-controls'>
-            <button className='central-button-red'>select</button>
-            <button className='central-button-blue'>menu</button>
-            <button className='central-button-green'>green</button>
+            <button className='central-button-red'><span className='visually-hidden'>select</span></button>
+            <button className='central-button-blue'><span className='visually-hidden'>menu</span></button>
+            <button className='central-button-green'><span className='visually-hidden'>green</span></button>
           </div>
           <div className='dpad__container'>
             <div className='dpad__vertical'>
