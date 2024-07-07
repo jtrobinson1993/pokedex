@@ -71,55 +71,63 @@ export default function Pokedex() {
           </div>
           <div className='pokedex__head-bottom-edge'></div>
         </div>
-        <figure className="screen" aria-live='polite'>
-          {
-            (selectedPokemonQuery.isPending || !imageLoaded) && (
-              <div className={'pokemon-image__container chromatic-aberration show'}><LoadingIndicator /></div>
-            )
-          }
-          {
-            (!selectedPokemonQuery.isPending) && (
-              <picture className={'pokemon-image__container' + (imageLoaded && ' show')}>
-                {
-                  selectedPokemonQuery.data?.sprites?.front_default && (
+        <div className='pokedex__body'>
+          <figure className="screen" aria-live='polite'>
+            {
+              (selectedPokemonQuery.isPending || !imageLoaded) && (
+                <div className={'pokemon-image__container chromatic-aberration show'}><LoadingIndicator /></div>
+              )
+            }
+            {
+              (!selectedPokemonQuery.isPending) && (
+                <picture className={'pokemon-image__container' + (imageLoaded && ' show')}>
+                  {
+                    selectedPokemonQuery.data?.sprites?.front_default && (
 
-                    <img onLoad={e => showPokemon(e)} className={'pokemon-image chromatic-aberration'} src={selectedPokemonQuery.data.sprites.other['official-artwork'].front_default} alt={selectedPokemonQuery.data.name + ' sprite'} height="100" />
-                  )
-                }
-              </picture>
-            )
-          }
-          {/* <figcaption className="pokemon-name">{(pokemonListQuery.isPending || selectedPokemonQuery.isPending) ? 'Loading...' : selectedPokemonQuery.data.name.replaceAll('-', ' ')}</figcaption> */}
-          <div className='screen__top-dots'></div>
-          <div className='screen__bottom-dot'></div>
-          <div className='screen__speaker'></div>
-        </figure>
-        <div className='pokedex-controls'>
-          <button className='start-button'></button>
-          <div className='central-controls'>
-            <button className='central-button-red'><span className='visually-hidden'>select</span></button>
-            <button className='central-button-blue'><span className='visually-hidden'>menu</span></button>
-            <button className='central-button-green'><span className='visually-hidden'>green</span></button>
+                      <img onLoad={e => showPokemon(e)} className={'pokemon-image chromatic-aberration'} src={selectedPokemonQuery.data.sprites.other['official-artwork'].front_default} alt={selectedPokemonQuery.data.name + ' sprite'} height="100" />
+                    )
+                  }
+                </picture>
+              )
+            }
+            {/* <figcaption className="pokemon-name">{(pokemonListQuery.isPending || selectedPokemonQuery.isPending) ? 'Loading...' : selectedPokemonQuery.data.name.replaceAll('-', ' ')}</figcaption> */}
+            <div className='screen__top-dots'></div>
+            <div className='screen__bottom-dot'></div>
+            <div className='screen__speaker'></div>
+          </figure>
+          <div className='pokedex-controls'>
+            <button className='start-button'></button>
+            <div className='central-controls'>
+              <button className='central-button-red' onClick={() => getPokemon(1)}><span className='visually-hidden'>reset</span></button>
+              <button className='central-button-blue'><span className='visually-hidden'>menu</span></button>
+              <button className='central-button-green'><span className='visually-hidden'>green</span></button>
+            </div>
+            <div className='dpad__container'>
+              <div className='dpad__vertical'>
+                <button className='dpad__button zoom-in' onClick={getPreviousPokemon}>
+                  <span className='visually-hidden'>Zoom In</span>
+                </button>
+                <button className='dpad__button zoom-out' onClick={getNextPokemon}>
+                  <span className='visually-hidden'>Zoom Out</span>
+                </button>
+              </div>
+              <div className='dpad__horizontal'>
+                <button className='dpad__button previous-pokemon' onClick={getPreviousPokemon}>
+                  <span className='visually-hidden'>Previous Pokemon</span>
+                </button>
+                <button className='dpad__button next-pokemon' onClick={getNextPokemon}>
+                  <span className='visually-hidden'>Next Pokemon</span>
+                </button>
+              </div>
+            </div>
           </div>
-          <div className='dpad__container'>
-            <div className='dpad__vertical'>
-              <button className='dpad__button zoom-in' onClick={getPreviousPokemon}>
-                <span className='visually-hidden'>Zoom In</span>
-              </button>
-              <button className='dpad__button zoom-out' onClick={getNextPokemon}>
-                <span className='visually-hidden'>Zoom Out</span>
-              </button>
-            </div>
-            <div className='dpad__horizontal'>
-              <button className='dpad__button previous-pokemon' onClick={getPreviousPokemon}>
-                <span className='visually-hidden'>Previous Pokemon</span>
-              </button>
-              <button className='dpad__button next-pokemon' onClick={getNextPokemon}>
-                <span className='visually-hidden'>Next Pokemon</span>
-              </button>
-            </div>
+          <div className='pokedex__body-outline'>
+            <div className='pokedex__body-outline--top'></div>
+            <div className='pokedex__body-outline--right'></div>
           </div>
         </div>
+        <div className='pokedex__hinge'></div>
+        <div className='pokedex__door'></div>
       </div>
       <svg width="0" height="0">
         {/* Credit: https://codepen.io/fand/pen/EgGwjg */}

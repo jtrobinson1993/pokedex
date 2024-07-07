@@ -16,14 +16,22 @@
 
 .pokedex {
   --pokedex-margin: 2.25rem;
+  --pokedex-width: calc(400rem / 16);
+  --pokedex-border-width: calc(2rem / 16);
+  --pokedex-hinge-width: calc(46rem / 16);
+  --outline-inset: calc(8rem / 16);
+  display: grid;
+  grid-template-columns: 1fr var(--pokedex-hinge-width);
+  grid-auto-rows: auto;
   background: var(--pokedex);
-  aspect-ratio: 530 / 800;
-  width: calc(400rem / 16);
+  width: var(--pokedex-width);
   border-radius: calc(8rem / 16);
-  border: calc(2rem / 16) solid black;
+  border-bottom-right-radius: 0;
+  border: var(--pokedex-border-width) solid black;
 }
 
 .pokedex__head {
+  grid-column: span 2;
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
@@ -40,7 +48,7 @@
   flex: 0 0 1em;
   border-radius: 50%;
   background: var(--pokedex-blue-light);
-  outline: calc(2rem / 16) solid var(--grey-dark);
+  outline: var(--pokedex-border-width) solid var(--grey-dark);
   border: calc(4rem / 16) solid var(--grey);
   
   &:before {
@@ -64,7 +72,7 @@
     left: 0;
     width: 100%;
     aspect-ratio: 1 / 1;
-    border: calc(2rem / 16) solid var(--grey-dark);
+    border: var(--pokedex-border-width) solid var(--grey-dark);
     border-radius: 50%;
   }
 }
@@ -158,7 +166,7 @@
   width: 1em;
   aspect-ratio: 1 / 1;
   background: var(--hl-color);
-  border: calc(2rem / 16) solid var(--grey-dark);
+  border: var(--pokedex-border-width) solid var(--grey-dark);
   border-radius: 50%;
   
   .highlight {
@@ -180,8 +188,53 @@
 
 .pokedex__head-bottom-edge {
   position: relative;
-  width: 50%;
-  border-bottom: calc(2rem / 16) solid black;
+  width: calc(var(--pokedex-width) / 2 - var(--pokedex-border-width));
+  border-bottom: var(--pokedex-border-width) solid black;
+
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    transform-origin: top right;
+    rotate: -46.5deg;
+    width: 30.125%;
+    bottom: 2.5rem;
+    right: -20%;
+    border-bottom: var(--pokedex-border-width) solid black;
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 80%;
+    bottom: 2.5rem;
+    right: -100%;
+    border-bottom: var(--pokedex-border-width) solid black;
+  }
+}
+
+
+.pokedex__body {
+  position: relative;
+  padding: var(--pokedex-margin) 0;
+}
+
+.pokedex__body-outline {
+  position: absolute;
+  inset: var(--outline-inset);
+  border: var(--pokedex-border-width) solid var(--grey-dark);
+  border-top: none;
+  border-bottom-left-radius: calc(6rem / 16);
+  border-bottom-right-radius: calc(6rem / 16);
+  z-index: 0;
+}
+
+.pokedex__body-outline--top {
+  --outline-top-width: calc(var(--pokedex-width) / 2 - var(--pokedex-border-width) * 2);
+  position: relative;
+  width: var(--outline-top-width);
+  border-bottom: var(--pokedex-border-width) solid black;
   margin-bottom: var(--pokedex-margin);
 
   &:before {
@@ -193,35 +246,45 @@
     width: 30.125%;
     bottom: 2.5rem;
     right: -20%;
-    border-bottom: calc(2rem / 16) solid black;
+    border-bottom: var(--pokedex-border-width) solid black;
   }
 
   &:after {
     content: '';
     display: block;
     position: absolute;
-    width: 80%;
+    width: calc(var(--outline-top-width) * .8 - var(--pokedex-hinge-width) - var(--outline-inset) * 2);
     bottom: 2.5rem;
-    right: -100%;
-    border-bottom: calc(2rem / 16) solid black;
+    right: calc(-100% + var(--pokedex-hinge-width) + var(--outline-inset) * 2);
+    border-bottom: var(--pokedex-border-width) solid black;
   }
 }
 
+.pokedex__body-outline--right {
+  position: absolute;
+  right: 0;
+  top: 0;
+  translate: 100% -100%;
+  background: var(--grey-dark);
+  width: var(--pokedex-border-width);
+  height: calc(42rem / 16);
+}
 
 
 .screen {
-  --screen-padding: 2.25rem;
+  --screen-padding: 2rem;
   position: relative;
   display: flex;
   flex-direction: column;
-  height: calc(250rem / 16);
+  height: calc(220rem / 16);
   background: var(--grey);
-  border: calc(2rem / 16) solid var(--grey-dark);
+  border: var(--pokedex-border-width) solid var(--grey-dark);
   border-radius: calc(8rem / 16);
   border-bottom-left-radius: calc(40rem / 16);
   padding: calc(var(--screen-padding) + 4rem / 16) var(--screen-padding);
   margin: 0 var(--pokedex-margin);
   overflow: hidden;
+  z-index: 2;
 
   &:before {
     display: block;
@@ -230,7 +293,7 @@
     content: '';
     inset: calc(var(--screen-padding) + 4rem / 16) var(--screen-padding);
     background: var(--screen);
-    border: calc(2rem / 16) solid var(--grey-dark);
+    border: var(--pokedex-border-width) solid var(--grey-dark);
     border-radius: calc(6rem / 16);
     box-shadow: 
       inset calc(5rem / 16) calc(3rem / 16) calc(8rem / 16) rgba(0,0,0,0.33),
@@ -247,7 +310,7 @@
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: calc(2rem / 16);
+  top: var(--pokedex-border-width);
   left: 0;
   width: 100%;
   height: var(--screen-padding);
@@ -256,7 +319,7 @@
     width: .55rem;
     aspect-ratio: 1 / 1;
     background: var(--pokedex);
-    border: calc(2rem / 16) solid black;
+    border: var(--pokedex-border-width) solid black;
     border-radius: 50%;
   }
 }
@@ -269,7 +332,7 @@
   aspect-ratio: 1 / 1;
   background: var(--pokedex);
   border-radius: 50%;
-  border: calc(2rem / 16) solid black;
+  border: var(--pokedex-border-width) solid black;
 }
 
 .screen__speaker {
@@ -277,7 +340,7 @@
   bottom:  calc((var(--screen-padding) + 2rem / 16) / 2);
   right: calc(var(--screen-padding) + 2rem / 16);
   width: 2rem;
-  height: calc(2rem / 16);
+  height: var(--pokedex-border-width);
   background: black;
   
   &:before, &:after {
@@ -391,19 +454,20 @@
 
 .pokedex-controls {
   display: flex;
-  gap: calc(24rem / 16);
   justify-content: space-between;
   align-items: flex-start;
-  padding: var(--pokedex-margin) calc(var(--pokedex-margin) * .75);
+  position: relative;
+  z-index: 2;
+  padding: calc(var(--pokedex-margin) * .75) calc(var(--pokedex-margin) * .75) 0;
 }
 
 
 
 .start-button {
-  width: 11%;
+  flex: 0 0 14%;
   aspect-ratio: 1 / 1;
   background: hsl(from var(--grey-dark) h s calc(l * 3));
-  border: calc(2rem / 16) solid var(--grey-dark);
+  border: var(--pokedex-border-width) solid var(--grey-dark);
   border-radius: 50%;
   cursor: pointer;
 }
@@ -411,19 +475,20 @@
 
 
 .central-controls {
+  --central-button-width: calc(40rem / 16);
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  flex: 1 0 auto;
+  flex: 0 1 auto;
   column-gap: calc(24rem / 16);
   row-gap: calc(18rem / 16);
 }
 
 .central-button-red, .central-button-blue {
-  flex: 0 0 calc(48rem / 16);
+  flex: 0 0 var(--central-button-width);
   height: calc(8rem / 16);
   border-radius: calc(8rem / 16);
-  border: calc(2rem / 16) solid var(--grey-dark);
+  border: var(--pokedex-border-width) solid var(--grey-dark);
   cursor: pointer;
 }
 
@@ -437,8 +502,8 @@
 
 .central-button-green {
   background: var(--screen);
-  border: calc(2rem / 16) solid var(--grey-dark);
-  flex: 0 0 calc((48rem * 2 + 24rem) / 16);
+  border: var(--pokedex-border-width) solid var(--grey-dark);
+  width: calc(var(--central-button-width) * 2 + 24rem / 16);
   aspect-ratio: 2 / 1;
   cursor: pointer;
 }
@@ -447,7 +512,7 @@
 
 .dpad__container {
   position: relative;
-  width: 27%;
+  flex: 0 0 30%;
   aspect-ratio: 1 / 1;
   &:before {
     content: '';
@@ -459,7 +524,7 @@
     width: .5rem;
     aspect-ratio: 1 / 1;
     border-radius: 50%;
-    border: calc(2rem / 16) solid var(--grey-dark);
+    border: var(--pokedex-border-width) solid var(--grey-dark);
     z-index: 3;
   }
 }
@@ -490,7 +555,7 @@
 .dpad__button {
   flex: 0 0 calc(33.33% + 2rem / 16);
   background: hsl(from var(--grey-dark) h s calc(l * 3));
-  border: calc(2rem / 16) solid var(--grey-dark);
+  border: var(--pokedex-border-width) solid var(--grey-dark);
   cursor: pointer;
 
   &.zoom-in {
@@ -507,6 +572,49 @@
 
   &.next-pokemon {
     border-left: none;
+  }
+}
+
+
+
+.pokedex__hinge {
+  --cutout-height: calc(34rem / 16);
+  position: relative;
+  top: calc(var(--cutout-height) * -1 - var(--outline-inset));
+  height: calc(100% + var(--cutout-height) + var(--outline-inset));
+  border-left: var(--pokedex-border-width) solid var(--grey-dark);
+  overflow: hidden;
+
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: -10%;
+    left: -2%;
+    height: 120%;
+    width: 120%;
+    background: linear-gradient(
+      to right, 
+      rgba(0,0,0,0), 
+      rgba(0,0,0,0) 18%, 
+      rgba(255,255,255,0.35) 18%, 
+      rgba(255,255,255,0.35) 40%, 
+      rgba(0,0,0,0) 40%, 
+      rgba(0,0,0,0) 65%, 
+      rgba(0,0,0,0.35) 65%, 
+      rgba(0,0,0,0.35) 100%);
+    filter: blur(calc(3rem / 16));
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    position: relative;
+    top: 9%;
+    height: 82%;
+    border: calc(var(--pokedex-border-width) * 2) solid var(--grey-dark);
+    border-left: none;
+    border-right: none;
   }
 }
 
