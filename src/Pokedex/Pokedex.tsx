@@ -1,4 +1,4 @@
-import { SyntheticEvent, useState } from 'react'
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import './Pokedex.css'
 import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
@@ -45,7 +45,7 @@ export default function Pokedex() {
     getPokemon(selectedPokemonId < pokemonListQuery.data.count ? selectedPokemonId + 1 : 1);
   }
 
-  function showPokemon(event: SyntheticEvent) {
+  function showPokemon() {
     setImageLoaded(true);
   }
 
@@ -84,7 +84,7 @@ export default function Pokedex() {
                   {
                     selectedPokemonQuery.data?.sprites?.front_default && (
 
-                      <img onLoad={e => showPokemon(e)} className={'pokemon-image chromatic-aberration'} src={selectedPokemonQuery.data.sprites.other['official-artwork'].front_default} alt={selectedPokemonQuery.data.name + ' sprite'} height="100" />
+                      <img onLoad={() => showPokemon()} className={'pokemon-image chromatic-aberration'} src={selectedPokemonQuery.data.sprites.other['official-artwork'].front_default} alt={selectedPokemonQuery.data.name + ' sprite'} height="100" />
                     )
                   }
                 </picture>
