@@ -1,0 +1,178 @@
+.screen {
+  --screen-padding: 2rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: calc(220rem / 16);
+  background: var(--grey);
+  border: var(--pokedex-border-width) solid var(--grey-dark);
+  border-radius: calc(8rem / 16);
+  border-bottom-left-radius: calc(40rem / 16);
+  padding: calc(var(--screen-padding) + 4rem / 16) var(--screen-padding);
+  margin: 0 var(--pokedex-margin);
+  overflow: hidden;
+  z-index: 2;
+
+  &:before {
+    display: block;
+    position: absolute;
+    z-index: 0;
+    content: '';
+    inset: calc(var(--screen-padding) + 4rem / 16) var(--screen-padding);
+    background: var(--screen);
+    border: var(--pokedex-border-width) solid var(--grey-dark);
+    border-radius: calc(6rem / 16);
+    box-shadow: 
+      inset calc(5rem / 16) calc(3rem / 16) calc(8rem / 16) rgba(0,0,0,0.33),
+      inset calc(4rem / 16) calc(0rem / 16) 0 hsla(from var(--screen) h s calc(l * .8)),
+      inset calc(-4rem / 16) calc(0rem / 16) 0 hsla(from var(--screen) h s calc(l * .8)),
+      inset calc(0rem / 16) calc(4rem / 16) 0 hsla(from var(--screen) h s calc(l * .8)),
+      inset calc(0rem / 16) calc(-4rem / 16) 0 hsla(from var(--screen) h s calc(l * .8));
+  }
+}
+
+.screen__top-dots {
+  display: flex;
+  gap: 1.75rem;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: var(--pokedex-border-width);
+  left: 0;
+  width: 100%;
+  height: var(--screen-padding);
+  &:before, &:after {
+    content: '';
+    width: .55rem;
+    aspect-ratio: 1 / 1;
+    background: var(--pokedex);
+    border: var(--pokedex-border-width) solid black;
+    border-radius: 50%;
+  }
+}
+
+.screen__bottom-dot {
+  position: absolute;
+  bottom: calc(var(--screen-padding) / 2);
+  width: 1rem;
+  transform: translateY(50%);
+  aspect-ratio: 1 / 1;
+  background: var(--pokedex);
+  border-radius: 50%;
+  border: var(--pokedex-border-width) solid black;
+}
+
+.screen__speaker {
+  position: absolute;
+  bottom:  calc((var(--screen-padding) + 2rem / 16) / 2);
+  right: calc(var(--screen-padding) + 2rem / 16);
+  width: 2rem;
+  height: var(--pokedex-border-width);
+  background: black;
+  
+  &:before, &:after {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: black;
+    content: '';
+  }
+
+  &:before {
+    top: -.5rem;
+  }
+
+  &:after {
+    bottom: -.5rem;
+  }
+}
+
+.pokemon-image__container, .pokemon-name {
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes scan-lines {
+  0% {
+    background-position: 0 0%;
+  }
+  100% {
+    background-position: 0 100%;
+  }
+}
+
+.pokemon-image__container {
+  display: none;
+  position: relative;
+  place-items: center;
+  flex: 1 0 auto;
+  overflow: hidden;
+  border-radius: calc(10rem / 16);
+  height: 100%;
+  
+  &.show {
+    display: grid;
+  }
+
+  &:before, &:after {
+    height: calc(100% - 12rem / 16);
+  }
+
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: calc(100% - 12rem / 16);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, .035), rgba(0, 0, 0, .035) calc(1rem / 16), rgba(0, 0, 0, 0) calc(1rem / 16));
+    background-size: 100% calc(5rem / 16);
+    background-repeat: repeat-y;
+    background-position: 0 0;
+    mix-blend-mode: darken;
+    animation: 125s linear 0s infinite scan-lines forwards;
+    z-index: 1;
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 90%;
+    left: 5%;
+    top: calc(6rem / 16);
+    /* hsla gradient not working?
+    background: linear-gradient(
+      to bottom, 
+      hsla(from var(--screen) h s l 1), 
+      hsla(from var(--screen) h s l 1) calc(1rem / 16), 
+      hsla(from var(--screen) h s l 0) calc(1rem / 16)
+    ); */
+    background: linear-gradient(
+      to bottom, 
+      #9DA266, 
+      #9DA266 calc(1rem / 16), 
+      #9DA26600 calc(1rem / 16)
+    );
+    background-size: 100% calc(5rem / 16);
+    background-repeat: repeat-y;
+    background-position: .1rem 0;
+    border-radius: calc(8rem / 16);
+    mix-blend-mode: color-burn;
+    animation: 125s linear 0s infinite scan-lines forwards;
+    z-index: 99;
+  }
+}
+
+.pokemon-image {
+  position: relative;
+  z-index: 2;
+  max-height: 100%;
+}
+
+.pokemon-name {
+  margin-top: auto;
+  text-transform: capitalize;
+  transform: translateY(-.25rem);
+  padding-bottom: .5rem;
+}
