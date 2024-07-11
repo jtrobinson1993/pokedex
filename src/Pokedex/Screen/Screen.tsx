@@ -1,47 +1,49 @@
-import { useState, useContext } from 'react'
-import './Screen.css'
-import LoadingIndicator from '../../LoadingIndicator/LoadingIndicator';
-import { usePokemonListQuery, useSelectedPokemonQuery, SelectedPokemonContext } from '../api.tsx';
+import classnames from "classnames";
+import "./Screen.css";
+import LoadingIndicator from "../../LoadingIndicator/LoadingIndicator";
+import { useSelectedPokemonQuery } from "../api.tsx";
+import { useAppContext } from "../../AppContext/AppContext.tsx";
 
-export default function Pokedex() {
-  const [imageLoaded, setImageLoaded] = useState(false);
+export interface ScreenProps {
+  onImageLoaded: () => void;
+}
 
-  const selectedPokemon = useSelectedPokemonQuery(useContext(SelectedPokemonContext));
-
-  function showPokemon() {
-    setImageLoaded(true);
-  }
-
-  if (usePokemonListQuery().error || selectedPokemon.error) return 'An error has occurred: ' + usePokemonListQuery().error?.message ?? selectedPokemon.error?.message
+export default function Screen({ onImageLoaded }: ScreenProps) {
+  const { isImageLoaded } = useAppContext();
+  const { data: selectedPokemon, isPending } = useSelectedPokemonQuery();
+  const imageSrc =
+    selectedPokemon?.sprites?.other["official-artwork"].front_default;
 
   return (
     <>
-      <figure className="screen" aria-live='polite'>
-        {
-          (selectedPokemon.isPending || !imageLoaded) && (
-            <div className={'pokemon-image__container chromatic-aberration show'}><LoadingIndicator /></div>
-          )
-        }
-        {
-          (!selectedPokemon.isPending) && (
-            <picture className={'pokemon-image__container' + (imageLoaded && ' show')}>
-              {
-                selectedPokemon.data?.sprites?.front_default && (
-
-                  <img onLoad={() => showPokemon()} className={'pokemon-image chromatic-aberration'} src={selectedPokemon.data.sprites.other['official-artwork'].front_default} alt={selectedPokemon.data.name + ' sprite'} height="100" />
-                )
-              }
-            </picture>
-          )
-        }
-        <div className='screen__top-dots'></div>
-        <div className='screen__bottom-dot'></div>
-        <div className='screen__speaker'></div>
+      <figure className="screen" aria-live="polite">
+        {(isPending || !isImageLoaded) && (
+          <div className="pokemon-image__container chromatic-aberration show">
+            <LoadingIndicator />
+          </div>
+        )}
+        {!isPending && (
+          <picture
+            className={classnames(
+              "pokemon-image__container",
+              isImageLoaded && "show"
+            )}
+          >
+            {imageSrc && (
+              <img
+                onLoad={onImageLoaded}
+                className="pokemon-image chromatic-aberration"
+                src={imageSrc}
+                alt={`${selectedPokemon.name} sprite`}
+                height="100"
+              />
+            )}
+          </picture>
+        )}
+        <div className="screen__top-dots"></div>
+        <div className="screen__bottom-dot"></div>
+        <div className="screen__speaker"></div>
       </figure>
     </>
-  )
+  );
 }
-
-
-
-
